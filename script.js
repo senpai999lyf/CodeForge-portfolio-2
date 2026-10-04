@@ -538,6 +538,624 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     /* =====================================================
+       14.5. INTERACTIVE CODEFORGE NETWORK
+       ===================================================== */
+
+    const networkContainer =
+        document.querySelector(".hero-network");
+
+    const networkNodes =
+        document.querySelectorAll(".floating-node");
+
+
+    /*
+       Information shown when a network node is selected.
+
+       The information is intentionally based on the existing
+       CodeForge identity and projects.
+    */
+
+    const networkInformation = [
+
+        {
+            title: "CODE",
+            label: "LANGUAGES & TOOLS",
+            description:
+                "The technical side of CodeForge is built around experimenting with code, learning different technologies and turning ideas into working digital experiences.",
+            details:
+                "HTML • CSS • JavaScript • Python • C • Java"
+        },
+
+        {
+            title: "DESIGN",
+            label: "CREATIVE THINKING",
+            description:
+                "Design helps CodeForge turn technical ideas into interfaces that are easier to understand, explore and enjoy.",
+            details:
+                "UI Design • Creativity • Visual Thinking • Presentation"
+        },
+
+        {
+            title: "IDEAS",
+            label: "PROBLEM SOLVING",
+            description:
+                "We start with an idea or everyday problem, break it down and experiment with possible solutions.",
+            details:
+                "Brainstorming • Experimentation • Practical Solutions"
+        },
+
+        {
+            title: "TEAM",
+            label: "THREE PEOPLE • ONE PROJECT",
+            description:
+                "CodeForge combines different personalities and strengths. Samarth focuses on technology and development, Aarti brings creativity and communication, while Mayur brings practical thinking and real-world perspectives.",
+            details:
+                "Samarth • Aarti • Mayur"
+        },
+
+        {
+            title: "PROJECTS",
+            label: "WHAT WE BUILD",
+            description:
+                "CodeForge uses projects as a way to turn learning into something tangible. The portfolio you're viewing is itself one of our projects.",
+            details:
+                "CodeForge Portfolio • Student Study Planner"
+        },
+
+        {
+            title: "LEARNING",
+            label: "BUILD • TEST • IMPROVE",
+            description:
+                "We're still students and constantly learning. Instead of pretending to know everything, we experiment, make mistakes and improve our work.",
+            details:
+                "Learning • Experimenting • Improving"
+        }
+
+    ];
+
+
+    /*
+       Create an information panel dynamically.
+
+       This means you do not need to completely redesign
+       the existing HTML just to make the network interactive.
+    */
+
+    let networkPanel = document.querySelector(
+        ".codeforge-network-panel"
+    );
+
+
+    if (networkContainer && networkNodes.length > 0) {
+
+        /*
+           Add a class so the CSS can identify the interactive
+           network without changing the existing HTML structure.
+        */
+
+        networkContainer.classList.add(
+            "codeforge-interactive-network"
+        );
+
+
+        /*
+           Assign information to the existing nodes.
+
+           If there are more nodes than our information list,
+           the remaining nodes still receive basic interaction.
+        */
+
+        networkNodes.forEach((node, index) => {
+
+            const info =
+                networkInformation[
+                    index % networkInformation.length
+                ];
+
+            node.classList.add("network-interactive-node");
+
+            node.setAttribute(
+                "tabindex",
+                "0"
+            );
+
+            node.setAttribute(
+                "role",
+                "button"
+            );
+
+            node.setAttribute(
+                "aria-label",
+                `Explore ${info.title} in CodeForge`
+            );
+
+            node.dataset.networkIndex =
+                index;
+
+        });
+
+
+        /*
+           Create the information panel only once.
+        */
+
+        if (!networkPanel) {
+
+            networkPanel =
+                document.createElement("div");
+
+            networkPanel.className =
+                "codeforge-network-panel";
+
+            networkPanel.setAttribute(
+                "aria-hidden",
+                "true"
+            );
+
+            networkPanel.innerHTML = `
+
+                <button
+                    class="network-panel-close"
+                    type="button"
+                    aria-label="Close CodeForge network information"
+                >
+                    ×
+                </button>
+
+                <div class="network-panel-label">
+                    CODEFORGE NETWORK
+                </div>
+
+                <div class="network-panel-title">
+                    Explore CodeForge
+                </div>
+
+                <div class="network-panel-role">
+                    Move over a node to discover more.
+                </div>
+
+                <p class="network-panel-description">
+                    Explore the different parts of CodeForge.
+                </p>
+
+                <div class="network-panel-details">
+                    CODE • DESIGN • IDEAS • TEAM
+                </div>
+
+            `;
+
+            networkContainer.appendChild(
+                networkPanel
+            );
+
+        }
+
+
+        const networkPanelClose =
+            networkPanel.querySelector(
+                ".network-panel-close"
+            );
+
+
+        /*
+           Show information for a selected node.
+        */
+
+        function showNetworkInformation(index) {
+
+            const info =
+                networkInformation[
+                    index % networkInformation.length
+                ];
+
+            if (!info || !networkPanel) {
+                return;
+            }
+
+
+            const title =
+                networkPanel.querySelector(
+                    ".network-panel-title"
+                );
+
+            const role =
+                networkPanel.querySelector(
+                    ".network-panel-role"
+                );
+
+            const description =
+                networkPanel.querySelector(
+                    ".network-panel-description"
+                );
+
+            const details =
+                networkPanel.querySelector(
+                    ".network-panel-details"
+                );
+
+
+            if (title) {
+                title.textContent =
+                    info.title;
+            }
+
+            if (role) {
+                role.textContent =
+                    info.label;
+            }
+
+            if (description) {
+                description.textContent =
+                    info.description;
+            }
+
+            if (details) {
+                details.textContent =
+                    info.details;
+            }
+
+
+            networkPanel.classList.add(
+                "active"
+            );
+
+            networkPanel.setAttribute(
+                "aria-hidden",
+                "false"
+            );
+
+        }
+
+
+        /*
+           Close network information panel.
+        */
+
+        function closeNetworkInformation() {
+
+            if (!networkPanel) {
+                return;
+            }
+
+            networkPanel.classList.remove(
+                "active"
+            );
+
+            networkPanel.setAttribute(
+                "aria-hidden",
+                "true"
+            );
+
+            networkNodes.forEach(node => {
+                node.classList.remove(
+                    "network-selected"
+                );
+            });
+
+        }
+
+
+        /*
+           Add click + keyboard interaction.
+        */
+
+        networkNodes.forEach((node, index) => {
+
+            node.addEventListener(
+                "click",
+                () => {
+
+                    networkNodes.forEach(
+                        otherNode => {
+                            otherNode.classList.remove(
+                                "network-selected"
+                            );
+                        }
+                    );
+
+                    node.classList.add(
+                        "network-selected"
+                    );
+
+                    showNetworkInformation(
+                        index
+                    );
+
+                }
+            );
+
+
+            node.addEventListener(
+                "keydown",
+                event => {
+
+                    if (
+                        event.key === "Enter" ||
+                        event.key === " "
+                    ) {
+
+                        event.preventDefault();
+
+                        node.click();
+
+                    }
+
+                }
+            );
+
+
+            /*
+               Hover interaction.
+
+               Nearby nodes receive a class so the network
+               feels connected rather than each node behaving
+               like an isolated button.
+            */
+
+            node.addEventListener(
+                "mouseenter",
+                () => {
+
+                    node.classList.add(
+                        "network-hover"
+                    );
+
+                    networkNodes.forEach(
+                        otherNode => {
+
+                            if (
+                                otherNode !== node
+                            ) {
+
+                                otherNode.classList.add(
+                                    "network-dimmed"
+                                );
+
+                            }
+
+                        }
+                    );
+
+                }
+            );
+
+
+            node.addEventListener(
+                "mouseleave",
+                () => {
+
+                    node.classList.remove(
+                        "network-hover"
+                    );
+
+                    networkNodes.forEach(
+                        otherNode => {
+
+                            otherNode.classList.remove(
+                                "network-dimmed"
+                            );
+
+                        }
+                    );
+
+                }
+            );
+
+        });
+
+
+        /*
+           Close button.
+        */
+
+        if (networkPanelClose) {
+
+            networkPanelClose.addEventListener(
+                "click",
+                closeNetworkInformation
+            );
+
+        }
+
+
+        /*
+           Close the network panel with Escape.
+        */
+
+        document.addEventListener(
+            "keydown",
+            event => {
+
+                if (event.key === "Escape") {
+                    closeNetworkInformation();
+                }
+
+            }
+        );
+
+
+        /*
+           Mouse movement interaction.
+
+           The existing floating animation remains active.
+
+           This adds a very subtle cursor-based movement on top
+           rather than replacing the existing animation.
+        */
+
+        const hasFinePointer =
+            window.matchMedia(
+                "(pointer: fine)"
+            ).matches;
+
+
+        if (hasFinePointer) {
+
+            let mouseX = 0;
+            let mouseY = 0;
+
+            let targetMouseX = 0;
+            let targetMouseY = 0;
+
+
+            window.addEventListener(
+                "mousemove",
+                event => {
+
+                    const rect =
+                        networkContainer.getBoundingClientRect();
+
+                    targetMouseX =
+                        (
+                            event.clientX -
+                            (
+                                rect.left +
+                                rect.width / 2
+                            )
+                        ) / rect.width;
+
+                    targetMouseY =
+                        (
+                            event.clientY -
+                            (
+                                rect.top +
+                                rect.height / 2
+                            )
+                        ) / rect.height;
+
+                }
+            );
+
+
+            function animateNetwork() {
+
+                mouseX +=
+                    (
+                        targetMouseX -
+                        mouseX
+                    ) * 0.035;
+
+                mouseY +=
+                    (
+                        targetMouseY -
+                        mouseY
+                    ) * 0.035;
+
+
+                networkNodes.forEach(
+                    (node, index) => {
+
+                        /*
+                           Keep the movement extremely small.
+
+                           This prevents the nodes from flying
+                           around or becoming distracting.
+                        */
+
+                        const movement =
+                            7 + (index % 3) * 2;
+
+                        const x =
+                            mouseX *
+                            movement;
+
+                        const y =
+                            mouseY *
+                            movement;
+
+
+                        node.style.setProperty(
+                            "--network-mouse-x",
+                            `${x}px`
+                        );
+
+                        node.style.setProperty(
+                            "--network-mouse-y",
+                            `${y}px`
+                        );
+
+                    }
+                );
+
+
+                requestAnimationFrame(
+                    animateNetwork
+                );
+
+            }
+
+
+            animateNetwork();
+
+        }
+
+
+        /*
+           Touch devices.
+
+           Tapping a node already triggers the same information
+           panel, so no separate heavy touch system is necessary.
+        */
+
+        if (!hasFinePointer) {
+
+            networkNodes.forEach(
+                node => {
+
+                    node.addEventListener(
+                        "touchstart",
+                        () => {
+
+                            node.classList.add(
+                                "network-hover"
+                            );
+
+                        },
+                        {
+                            passive: true
+                        }
+                    );
+
+                }
+            );
+
+        }
+
+
+        /*
+           Optional network status indicator.
+
+           Created dynamically so the existing HTML remains
+           untouched.
+        */
+
+        let networkHint =
+            networkContainer.querySelector(
+                ".network-interaction-hint"
+            );
+
+
+        if (!networkHint) {
+
+            networkHint =
+                document.createElement("div");
+
+            networkHint.className =
+                "network-interaction-hint";
+
+            networkHint.textContent =
+                "INTERACTIVE NETWORK • HOVER OR CLICK A NODE";
+
+            networkContainer.appendChild(
+                networkHint
+            );
+
+        }
+
+    }
+
+
+    /* =====================================================
        15. CUSTOM CURSOR
        ===================================================== */
 
@@ -572,7 +1190,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
         const hoverElements = document.querySelectorAll(
-            "a, button, input, textarea, select, .project-card, .skill-tag"
+            "a, button, input, textarea, select, .project-card, .skill-tag, .network-interactive-node"
         );
 
         hoverElements.forEach(element => {
@@ -691,6 +1309,8 @@ document.addEventListener("DOMContentLoaded", () => {
     );
 
 });
+
+
 /* =====================================================
    TEAM MEMBERS
 ===================================================== */
