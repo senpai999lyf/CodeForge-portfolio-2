@@ -947,15 +947,14 @@ img {
 /* =====================================================
    CARDS
 ===================================================== */
-
-.network-orbit .network-card {
+.network-card {
 
     position: absolute;
 
     left: 50%;
     top: 50%;
 
-    width: 105px;
+    min-width: 105px;
 
     padding: 15px 18px;
 
@@ -963,22 +962,25 @@ img {
 
     border: 1px solid var(--line);
 
-    border-radius: 15px;
-
     backdrop-filter: blur(15px);
+
+    border-radius: 15px;
 
     box-shadow: var(--shadow);
 
-    /* IMPORTANT */
-
     transform:
         translate(-50%, -50%)
-        rotate(var(--card-angle))
+        rotate(var(--orbit-angle, 0deg))
         translateX(210px)
-        rotate(calc(-1 * var(--card-angle)));
+        rotate(calc(-1 * var(--orbit-angle, 0deg)))
+        scale(var(--orbit-scale, 1));
+
+    z-index:
+        calc(10 + var(--orbit-depth, 0));
+
+    cursor: pointer;
 
 }
-
 
 /* =====================================================
    CARD POSITIONS
