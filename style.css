@@ -924,218 +924,7 @@ img {
 }
 
 /* =====================================================
-   CODEFORGE NETWORK
-===================================================== */
-
-.codeforge-network {
-
-    position: absolute;
-
-    right: 4vw;
-
-    top: 50%;
-
-    width: 48vw;
-    height: 48vw;
-
-    max-width: 650px;
-    max-height: 650px;
-
-    transform:
-        translateY(-50%)
-        translate(
-            var(--network-mouse-x, 0px),
-            var(--network-mouse-y, 0px)
-        );
-
-    perspective: 1200px;
-
-    transform-style: preserve-3d;
-
-}
-
-
-/* =====================================================
-   ORBIT CIRCLES
-===================================================== */
-
-.network-circle {
-
-    position: absolute;
-
-    left: 50%;
-    top: 50%;
-
-    border: 1px solid var(--line);
-
-    border-radius: 50%;
-
-    transform:
-        translate(-50%, -50%);
-
-    pointer-events: none;
-
-}
-
-
-.circle-large {
-
-    width: 90%;
-    height: 90%;
-
-    animation:
-        rotateNetwork 35s linear infinite;
-
-}
-
-
-.circle-small {
-
-    width: 55%;
-    height: 55%;
-
-    border-style: dashed;
-
-    animation:
-        rotateNetworkReverse 25s linear infinite;
-
-}
-
-
-.circle-inner {
-
-    width: 35%;
-    height: 35%;
-
-    border-color:
-        var(--accent-light);
-
-    opacity: 0.5;
-
-    animation:
-        rotateNetwork 18s linear infinite;
-
-}
-
-
-@keyframes rotateNetwork {
-
-    from {
-
-        transform:
-            translate(-50%, -50%)
-            rotate(0deg);
-
-    }
-
-    to {
-
-        transform:
-            translate(-50%, -50%)
-            rotate(360deg);
-
-    }
-
-}
-
-
-@keyframes rotateNetworkReverse {
-
-    from {
-
-        transform:
-            translate(-50%, -50%)
-            rotate(360deg);
-
-    }
-
-    to {
-
-        transform:
-            translate(-50%, -50%)
-            rotate(0deg);
-
-    }
-
-}
-
-
-/* =====================================================
-   CONNECTING LINES
-===================================================== */
-
-.network-lines {
-
-    position: absolute;
-
-    inset: 0;
-
-    pointer-events: none;
-
-    transform-style: preserve-3d;
-
-}
-
-
-.network-line {
-
-    position: absolute;
-
-    left: 50%;
-    top: 50%;
-
-    width: 42%;
-
-    height: 1px;
-
-    background:
-        var(--line-strong);
-
-    transform-origin:
-        left center;
-
-    opacity: 0.65;
-
-}
-
-
-/* Eight connection directions */
-
-.network-line-one {
-    transform: rotate(0deg);
-}
-
-.network-line-two {
-    transform: rotate(45deg);
-}
-
-.network-line-three {
-    transform: rotate(90deg);
-}
-
-.network-line-four {
-    transform: rotate(135deg);
-}
-
-.network-line-five {
-    transform: rotate(180deg);
-}
-
-.network-line-six {
-    transform: rotate(225deg);
-}
-
-.network-line-seven {
-    transform: rotate(270deg);
-}
-
-.network-line-eight {
-    transform: rotate(315deg);
-}
-
-
-/* =====================================================
-   ORBIT
+   SPINNING NETWORK ORBIT
 ===================================================== */
 
 .network-orbit {
@@ -1144,147 +933,55 @@ img {
 
     inset: 0;
 
+    width: 100%;
+    height: 100%;
+
     transform-style: preserve-3d;
+
+    animation:
+        networkOrbitSpin 18s linear infinite;
 
 }
 
 
 /* =====================================================
-   NETWORK CARDS
+   CARDS
 ===================================================== */
 
-.network-card {
+.network-orbit .network-card {
 
     position: absolute;
 
     left: 50%;
     top: 50%;
 
-    min-width: 105px;
+    width: 105px;
 
     padding: 15px 18px;
 
-    background:
-        var(--surface);
+    background: var(--surface);
 
-    border:
-        1px solid var(--line);
-
-    backdrop-filter:
-        blur(15px);
+    border: 1px solid var(--line);
 
     border-radius: 15px;
 
-    box-shadow:
-        var(--shadow);
+    backdrop-filter: blur(15px);
+
+    box-shadow: var(--shadow);
+
+    /* IMPORTANT */
 
     transform:
-
         translate(-50%, -50%)
-
-        rotate(var(--orbit-angle, 0deg))
-
-        translateX(
-            clamp(170px, 20vw, 220px)
-        )
-
-        rotate(
-            calc(
-                -1 * var(--orbit-angle, 0deg)
-            )
-        )
-
-        scale(
-            var(--orbit-scale, 1)
-        );
-
-    z-index:
-        calc(
-            10 + var(--orbit-depth, 0)
-        );
-
-    cursor: pointer;
-
-    will-change: transform;
-
-    transition:
-        box-shadow 0.3s ease,
-        border-color 0.3s ease;
+        rotate(var(--card-angle))
+        translateX(210px)
+        rotate(calc(-1 * var(--card-angle)));
 
 }
 
 
 /* =====================================================
-   CARD CONTENT
-===================================================== */
-
-.network-card strong {
-
-    display: block;
-
-    font-size: 11px;
-
-    letter-spacing: 0.1em;
-
-}
-
-
-.network-card small {
-
-    display: block;
-
-    margin-top: 5px;
-
-    font-family:
-        var(--font-mono);
-
-    font-size: 8px;
-
-    color:
-        var(--text-faint);
-
-}
-
-
-.network-number {
-
-    display: block;
-
-    margin-bottom: 6px;
-
-    font-family:
-        var(--font-mono);
-
-    font-size: 7px;
-
-    letter-spacing: 0.15em;
-
-    color:
-        var(--text-faint);
-
-}
-
-
-/* =====================================================
-   CARD HOVER
-===================================================== */
-
-.network-card:hover,
-.network-card.network-card-active {
-
-    border-color:
-        var(--accent);
-
-    box-shadow:
-        var(--shadow-heavy);
-
-    z-index: 100;
-
-}
-
-
-/* =====================================================
-   INDIVIDUAL CARD STARTING ANGLES
+   CARD POSITIONS
 ===================================================== */
 
 .card-one {
@@ -1321,136 +1018,26 @@ img {
 
 
 /* =====================================================
-   CENTER
+   ACTUAL SPIN
 ===================================================== */
 
-.network-center {
+@keyframes networkOrbitSpin {
 
-    position: absolute;
-
-    left: 50%;
-    top: 50%;
-
-    transform:
-        translate(-50%, -50%);
-
-    width: 210px;
-    height: 210px;
-
-    border-radius: 50%;
-
-    background:
-        var(--surface);
-
-    border:
-        1px solid var(--line-strong);
-
-    backdrop-filter:
-        blur(20px);
-
-    display: flex;
-
-    flex-direction: column;
-
-    justify-content: center;
-
-    align-items: center;
-
-    text-align: center;
-
-    box-shadow:
-        var(--shadow-heavy);
-
-    z-index: 50;
-
-}
-
-
-/* =====================================================
-   CENTER LOGO
-===================================================== */
-
-.network-center img {
-
-    width: 58px;
-    height: 58px;
-
-    object-fit: contain;
-
-    margin-bottom: 10px;
-
-}
-
-
-.network-center h3 {
-
-    font-size: 20px;
-
-    letter-spacing: -0.04em;
-
-}
-
-
-.network-center p {
-
-    font-size: 8px;
-
-    color:
-        var(--text-soft);
-
-    margin-top: 5px;
-
-}
-
-
-/* =====================================================
-   CENTER GLOW
-===================================================== */
-
-.network-glow {
-
-    position: absolute;
-
-    inset: -20px;
-
-    border-radius: 50%;
-
-    border:
-        1px solid var(--accent-light);
-
-    animation:
-        glowPulse 3s ease-in-out infinite;
-
-    pointer-events: none;
-
-}
-
-
-@keyframes glowPulse {
-
-    0%,
-    100% {
+    from {
 
         transform:
-            scale(0.95);
-
-        opacity:
-            0.2;
+            rotate(0deg);
 
     }
 
-    50% {
+    to {
 
         transform:
-            scale(1.08);
-
-        opacity:
-            0.7;
+            rotate(360deg);
 
     }
 
 }
-
 
 /* =========================================================
    GENERAL SECTION
