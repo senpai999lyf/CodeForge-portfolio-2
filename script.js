@@ -15,7 +15,7 @@ document.addEventListener("DOMContentLoaded", () => {
             if (loader) {
                 loader.classList.add("loaded");
             }
-        }, 500);
+        }, 900);
     });
 
 
@@ -28,7 +28,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (intro) {
         setTimeout(() => {
             intro.classList.add("hide");
-        }, 6500);
+        }, 650);
     }
 
 
