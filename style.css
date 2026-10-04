@@ -923,10 +923,9 @@ img {
 
 }
 
-
-/* =========================================================
-   HERO NETWORK
-   ========================================================= */
+/* =====================================================
+   CODEFORGE NETWORK
+===================================================== */
 
 .codeforge-network {
 
@@ -937,31 +936,44 @@ img {
     top: 50%;
 
     width: 48vw;
-
     height: 48vw;
 
     max-width: 650px;
-
     max-height: 650px;
 
-    transform: translateY(-50%);
+    transform:
+        translateY(-50%)
+        translate(
+            var(--network-mouse-x, 0px),
+            var(--network-mouse-y, 0px)
+        );
+
+    perspective: 1200px;
+
+    transform-style: preserve-3d;
 
 }
 
+
+/* =====================================================
+   ORBIT CIRCLES
+===================================================== */
 
 .network-circle {
 
     position: absolute;
 
+    left: 50%;
+    top: 50%;
+
     border: 1px solid var(--line);
 
     border-radius: 50%;
 
-    left: 50%;
+    transform:
+        translate(-50%, -50%);
 
-    top: 50%;
-
-    transform: translate(-50%, -50%);
+    pointer-events: none;
 
 }
 
@@ -969,7 +981,6 @@ img {
 .circle-large {
 
     width: 90%;
-
     height: 90%;
 
     animation:
@@ -981,7 +992,6 @@ img {
 .circle-small {
 
     width: 55%;
-
     height: 55%;
 
     border-style: dashed;
@@ -992,18 +1002,38 @@ img {
 }
 
 
+.circle-inner {
+
+    width: 35%;
+    height: 35%;
+
+    border-color:
+        var(--accent-light);
+
+    opacity: 0.5;
+
+    animation:
+        rotateNetwork 18s linear infinite;
+
+}
+
+
 @keyframes rotateNetwork {
 
     from {
+
         transform:
             translate(-50%, -50%)
             rotate(0deg);
+
     }
 
     to {
+
         transform:
             translate(-50%, -50%)
             rotate(360deg);
+
     }
 
 }
@@ -1012,16 +1042,37 @@ img {
 @keyframes rotateNetworkReverse {
 
     from {
+
         transform:
             translate(-50%, -50%)
             rotate(360deg);
+
     }
 
     to {
+
         transform:
             translate(-50%, -50%)
             rotate(0deg);
+
     }
+
+}
+
+
+/* =====================================================
+   CONNECTING LINES
+===================================================== */
+
+.network-lines {
+
+    position: absolute;
+
+    inset: 0;
+
+    pointer-events: none;
+
+    transform-style: preserve-3d;
 
 }
 
@@ -1031,63 +1082,141 @@ img {
     position: absolute;
 
     left: 50%;
-
     top: 50%;
 
-    width: 45%;
+    width: 42%;
 
     height: 1px;
 
-    background: var(--line-strong);
+    background:
+        var(--line-strong);
 
-    transform-origin: left center;
+    transform-origin:
+        left center;
+
+    opacity: 0.65;
 
 }
 
+
+/* Eight connection directions */
 
 .network-line-one {
-    transform: rotate(20deg);
+    transform: rotate(0deg);
 }
-
 
 .network-line-two {
-    transform: rotate(110deg);
+    transform: rotate(45deg);
 }
-
 
 .network-line-three {
-    transform: rotate(200deg);
+    transform: rotate(90deg);
 }
-
 
 .network-line-four {
-    transform: rotate(290deg);
+    transform: rotate(135deg);
 }
 
+.network-line-five {
+    transform: rotate(180deg);
+}
+
+.network-line-six {
+    transform: rotate(225deg);
+}
+
+.network-line-seven {
+    transform: rotate(270deg);
+}
+
+.network-line-eight {
+    transform: rotate(315deg);
+}
+
+
+/* =====================================================
+   ORBIT
+===================================================== */
+
+.network-orbit {
+
+    position: absolute;
+
+    inset: 0;
+
+    transform-style: preserve-3d;
+
+}
+
+
+/* =====================================================
+   NETWORK CARDS
+===================================================== */
 
 .network-card {
 
     position: absolute;
 
-    padding: 15px 18px;
+    left: 50%;
+    top: 50%;
 
     min-width: 105px;
 
-    background: var(--surface);
+    padding: 15px 18px;
 
-    border: 1px solid var(--line);
+    background:
+        var(--surface);
 
-    backdrop-filter: blur(15px);
+    border:
+        1px solid var(--line);
+
+    backdrop-filter:
+        blur(15px);
 
     border-radius: 15px;
 
-    box-shadow: var(--shadow);
+    box-shadow:
+        var(--shadow);
 
-    animation:
-        floatingNode 4s ease-in-out infinite;
+    transform:
+
+        translate(-50%, -50%)
+
+        rotate(var(--orbit-angle, 0deg))
+
+        translateX(
+            clamp(170px, 20vw, 220px)
+        )
+
+        rotate(
+            calc(
+                -1 * var(--orbit-angle, 0deg)
+            )
+        )
+
+        scale(
+            var(--orbit-scale, 1)
+        );
+
+    z-index:
+        calc(
+            10 + var(--orbit-depth, 0)
+        );
+
+    cursor: pointer;
+
+    will-change: transform;
+
+    transition:
+        box-shadow 0.3s ease,
+        border-color 0.3s ease;
 
 }
 
+
+/* =====================================================
+   CARD CONTENT
+===================================================== */
 
 .network-card strong {
 
@@ -1106,92 +1235,118 @@ img {
 
     margin-top: 5px;
 
-    font-family: var(--font-mono);
+    font-family:
+        var(--font-mono);
 
     font-size: 8px;
 
-    color: var(--text-faint);
+    color:
+        var(--text-faint);
 
 }
 
+
+.network-number {
+
+    display: block;
+
+    margin-bottom: 6px;
+
+    font-family:
+        var(--font-mono);
+
+    font-size: 7px;
+
+    letter-spacing: 0.15em;
+
+    color:
+        var(--text-faint);
+
+}
+
+
+/* =====================================================
+   CARD HOVER
+===================================================== */
+
+.network-card:hover,
+.network-card.network-card-active {
+
+    border-color:
+        var(--accent);
+
+    box-shadow:
+        var(--shadow-heavy);
+
+    z-index: 100;
+
+}
+
+
+/* =====================================================
+   INDIVIDUAL CARD STARTING ANGLES
+===================================================== */
 
 .card-one {
-
-    top: 8%;
-
-    left: 18%;
-
+    --card-angle: 0deg;
 }
-
 
 .card-two {
-
-    top: 25%;
-
-    right: 3%;
-
-    animation-delay: -1s;
-
+    --card-angle: 45deg;
 }
-
 
 .card-three {
-
-    bottom: 15%;
-
-    right: 12%;
-
-    animation-delay: -2s;
-
+    --card-angle: 90deg;
 }
-
 
 .card-four {
+    --card-angle: 135deg;
+}
 
-    bottom: 5%;
+.card-five {
+    --card-angle: 180deg;
+}
 
-    left: 18%;
+.card-six {
+    --card-angle: 225deg;
+}
 
-    animation-delay: -3s;
+.card-seven {
+    --card-angle: 270deg;
+}
 
+.card-eight {
+    --card-angle: 315deg;
 }
 
 
-@keyframes floatingNode {
-
-    0%,
-    100% {
-        transform: translateY(0);
-    }
-
-    50% {
-        transform: translateY(-15px);
-    }
-
-}
-
+/* =====================================================
+   CENTER
+===================================================== */
 
 .network-center {
 
     position: absolute;
 
     left: 50%;
-
     top: 50%;
 
-    transform: translate(-50%, -50%);
+    transform:
+        translate(-50%, -50%);
 
     width: 210px;
-
     height: 210px;
 
     border-radius: 50%;
 
-    background: var(--surface);
+    background:
+        var(--surface);
 
-    border: 1px solid var(--line-strong);
+    border:
+        1px solid var(--line-strong);
 
-    backdrop-filter: blur(20px);
+    backdrop-filter:
+        blur(20px);
 
     display: flex;
 
@@ -1203,17 +1358,21 @@ img {
 
     text-align: center;
 
-    box-shadow: var(--shadow-heavy);
+    box-shadow:
+        var(--shadow-heavy);
 
-    z-index: 3;
+    z-index: 50;
 
 }
 
 
+/* =====================================================
+   CENTER LOGO
+===================================================== */
+
 .network-center img {
 
     width: 58px;
-
     height: 58px;
 
     object-fit: contain;
@@ -1236,12 +1395,17 @@ img {
 
     font-size: 8px;
 
-    color: var(--text-soft);
+    color:
+        var(--text-soft);
 
     margin-top: 5px;
 
 }
 
+
+/* =====================================================
+   CENTER GLOW
+===================================================== */
 
 .network-glow {
 
@@ -1251,7 +1415,8 @@ img {
 
     border-radius: 50%;
 
-    border: 1px solid var(--accent-light);
+    border:
+        1px solid var(--accent-light);
 
     animation:
         glowPulse 3s ease-in-out infinite;
@@ -1265,64 +1430,23 @@ img {
 
     0%,
     100% {
-        transform: scale(0.95);
-        opacity: 0.2;
+
+        transform:
+            scale(0.95);
+
+        opacity:
+            0.2;
+
     }
 
     50% {
-        transform: scale(1.08);
-        opacity: 0.7;
-    }
 
-}
+        transform:
+            scale(1.08);
 
+        opacity:
+            0.7;
 
-.hero-bottom {
-
-    position: absolute;
-
-    left: 5vw;
-
-    right: 5vw;
-
-    bottom: 30px;
-
-    display: flex;
-
-    justify-content: space-between;
-
-    font-family: var(--font-mono);
-
-    font-size: 9px;
-
-    letter-spacing: 0.15em;
-
-    color: var(--text-faint);
-
-}
-
-
-.hero-arrow {
-
-    color: var(--accent);
-
-    font-size: 18px;
-
-    animation:
-        arrowBounce 2s infinite;
-
-}
-
-
-@keyframes arrowBounce {
-
-    0%,
-    100% {
-        transform: translateY(0);
-    }
-
-    50% {
-        transform: translateY(6px);
     }
 
 }
