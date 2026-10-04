@@ -1460,8 +1460,8 @@ document
 
     });
 /* =====================================================
-   14.5. CODEFORGE NETWORK — SPINNING
-   ===================================================== */
+   CODEFORGE NETWORK — FOUR CARD SLIDE
+===================================================== */
 
 const codeforgeNetwork =
     document.querySelector(".codeforge-network");
@@ -1471,210 +1471,54 @@ const codeforgeCards =
         ".codeforge-network .network-card"
     );
 
+
 if (codeforgeNetwork && codeforgeCards.length) {
 
-    let rotation = 0;
-
-    let speed = 0.12;
-
-    let targetSpeed = 0.12;
+    /* ================================================
+       CARD CLICK — PAUSE / RESUME
+    ================================================= */
 
     let paused = false;
 
+    codeforgeCards.forEach(card => {
 
-    /* ================================================
-       SET CARD POSITIONS
-    ================================================= */
+        card.addEventListener("click", () => {
 
-    codeforgeCards.forEach((card, index) => {
+            paused = !paused;
 
-        const angle =
-            (360 / codeforgeCards.length) * index;
+            codeforgeNetwork.classList.toggle(
+                "network-paused",
+                paused
+            );
 
-        card.style.setProperty(
-            "--card-angle",
-            `${angle}deg`
-        );
+        });
 
     });
 
 
     /* ================================================
-       CARD HOVER
+       PAUSE ON HOVER
     ================================================= */
 
     codeforgeCards.forEach(card => {
 
-        card.addEventListener(
-            "mouseenter",
-            () => {
+        card.addEventListener("mouseenter", () => {
 
-                targetSpeed = 0.06;
+            card.classList.add(
+                "network-card-active"
+            );
 
-                card.classList.add(
-                    "network-card-active"
-                );
-
-            }
-        );
+        });
 
 
-        card.addEventListener(
-            "mouseleave",
-            () => {
+        card.addEventListener("mouseleave", () => {
 
-                targetSpeed = 0.12;
+            card.classList.remove(
+                "network-card-active"
+            );
 
-                card.classList.remove(
-                    "network-card-active"
-                );
-
-            }
-        );
-
-
-        /* Click = pause */
-
-        card.addEventListener(
-            "click",
-            () => {
-
-                paused = !paused;
-
-            }
-        );
+        });
 
     });
-
-
-    /* ================================================
-       DOUBLE CLICK NETWORK = PAUSE / RESUME
-    ================================================= */
-
-    codeforgeNetwork.addEventListener(
-        "dblclick",
-        () => {
-
-            paused = !paused;
-
-        }
-    );
-
-
-    /* ================================================
-       MOUSE SPEED CONTROL
-    ================================================= */
-
-    codeforgeNetwork.addEventListener(
-        "mousemove",
-        event => {
-
-            const rect =
-                codeforgeNetwork.getBoundingClientRect();
-
-            const mouseX =
-                (
-                    event.clientX -
-                    rect.left
-                ) / rect.width - 0.5;
-
-            targetSpeed =
-                0.12 +
-                Math.abs(mouseX) * 0.12;
-
-        }
-    );
-
-
-    codeforgeNetwork.addEventListener(
-        "mouseleave",
-        () => {
-
-            targetSpeed = 0.25;
-
-        }
-    );
-
-
-    /* ================================================
-       SPINNING ANIMATION
-    ================================================= */
-
-    function spinCodeforgeNetwork() {
-
-        if (!paused) {
-
-            speed +=
-                (targetSpeed - speed) * 0.04;
-
-            rotation += speed;
-
-
-            codeforgeNetwork.style.setProperty(
-                "--network-rotation",
-                `${rotation}deg`
-            );
-
-
-            codeforgeCards.forEach(
-                (card, index) => {
-
-                    const baseAngle =
-                        (
-                            360 /
-                            codeforgeCards.length
-                        ) * index;
-
-                    const currentAngle =
-                        baseAngle + rotation;
-
-
-                    const radians =
-                        currentAngle *
-                        Math.PI / 180;
-
-
-                    /* Front/back depth */
-
-                    const depth =
-                        Math.sin(radians);
-
-
-                    const scale =
-                        0.88 +
-                        ((depth + 1) * 0.08);
-
-
-                    card.style.setProperty(
-                        "--orbit-angle",
-                        `${currentAngle}deg`
-                    );
-
-
-                    card.style.setProperty(
-                        "--orbit-scale",
-                        scale
-                    );
-
-
-                    card.style.setProperty(
-                        "--orbit-depth",
-                        Math.round(depth * 100)
-                    );
-
-                }
-            );
-
-        }
-
-
-        requestAnimationFrame(
-            spinCodeforgeNetwork
-        );
-
-    }
-
-
-    spinCodeforgeNetwork();
 
 }
