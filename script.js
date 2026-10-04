@@ -15,7 +15,7 @@ document.addEventListener("DOMContentLoaded", () => {
             if (loader) {
                 loader.classList.add("loaded");
             }
-        }, 900);
+        }, 500);
     });
 
 
