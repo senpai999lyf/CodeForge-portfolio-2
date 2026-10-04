@@ -28,7 +28,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (intro) {
         setTimeout(() => {
             intro.classList.add("hide");
-        }, 650);
+        }, 2000);
     }
 
 
