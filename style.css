@@ -922,78 +922,28 @@ img {
     background: var(--surface-solid);
 
 }
-
 /* =====================================================
-   CODEFORGE NETWORK — DESKTOP / LAPTOP
+   FOUR SLIDING NETWORK CARDS
 ===================================================== */
 
-.codeforge-network {
+.network-orbit {
     position: absolute;
-
-    right: 5vw;
-    top: 50%;
-
-    width: min(42vw, 560px);
-    height: min(42vw, 560px);
-
-    transform: translateY(-50%);
+    inset: 0;
+    z-index: 25;
 }
 
 
 /* =====================================================
-   NETWORK CIRCLES
-===================================================== */
-
-.network-circle {
-    position: absolute;
-
-    left: 50%;
-    top: 50%;
-
-    transform: translate(-50%, -50%);
-
-    border: 1px solid var(--line);
-
-    border-radius: 50%;
-}
-
-.circle-large {
-    width: 88%;
-    height: 88%;
-
-    animation: rotateNetwork 45s linear infinite;
-}
-
-.circle-small {
-    width: 56%;
-    height: 56%;
-
-    border-style: dashed;
-
-    animation: rotateNetworkReverse 32s linear infinite;
-}
-
-.circle-inner {
-    width: 32%;
-    height: 32%;
-
-    border-color: var(--line-strong);
-}
-
-/* =====================================================
-   NETWORK CARDS
+   CARD
 ===================================================== */
 
 .network-card {
     position: absolute;
 
-    left: 50%;
-    top: 50%;
+    width: 115px;
+    min-height: 70px;
 
-    width: 110px;
-    min-height: 62px;
-
-    padding: 10px 11px;
+    padding: 11px 13px;
 
     box-sizing: border-box;
 
@@ -1007,44 +957,61 @@ img {
 
     box-shadow: var(--shadow);
 
-    transform:
-        translate(-50%, -50%)
-        rotate(var(--orbit-angle, 0deg))
-        translateX(175px);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    overflow: hidden;
 
     cursor: pointer;
-
-    z-index: calc(20 + var(--orbit-depth, 0));
 
     transition:
         border-color 0.25s ease,
         box-shadow 0.25s ease,
-        scale 0.25s ease;
-
-    overflow: hidden;
+        transform 0.25s ease;
 }
 
 
-/* Keep text upright + inside card */
+/* =====================================================
+   CARD POSITIONS
+===================================================== */
 
-.network-card strong,
-.network-card small,
+.card-one {
+    left: 8%;
+    top: 28%;
+
+    animation: cardSlideOne 4s ease-in-out infinite;
+}
+
+.card-two {
+    right: 8%;
+    top: 28%;
+
+    animation: cardSlideTwo 4s ease-in-out infinite;
+}
+
+.card-three {
+    left: 8%;
+    bottom: 25%;
+
+    animation: cardSlideThree 4s ease-in-out infinite;
+}
+
+.card-four {
+    right: 8%;
+    bottom: 25%;
+
+    animation: cardSlideFour 4s ease-in-out infinite;
+}
+
+
+/* =====================================================
+   TEXT
+===================================================== */
+
 .network-number {
     display: block;
 
-    transform:
-        rotate(calc(-1 * var(--orbit-angle, 0deg)));
-
-    max-width: 100%;
-
-    overflow-wrap: break-word;
-    word-break: normal;
-}
-
-
-/* Number */
-
-.network-number {
     font-family: var(--font-mono);
 
     font-size: 7px;
@@ -1055,39 +1022,89 @@ img {
 }
 
 
-/* Title */
-
 .network-card strong {
-    font-size: 9px;
+    display: block;
 
-    line-height: 1.25;
+    font-size: 10px;
 
-    letter-spacing: 0.06em;
+    line-height: 1.2;
 
-    white-space: normal;
+    letter-spacing: 0.1em;
 }
 
 
-/* Subtitle */
-
 .network-card small {
+    display: block;
+
     margin-top: 3px;
 
     font-family: var(--font-mono);
 
-    font-size: 6.5px;
+    font-size: 7px;
 
-    line-height: 1.3;
+    line-height: 1.2;
 
     color: var(--text-faint);
 
-    letter-spacing: 0.03em;
-
-    white-space: normal;
+    letter-spacing: 0.05em;
 }
 
 
-/* Hover */
+/* =====================================================
+   GENTLE MOVEMENT
+===================================================== */
+
+@keyframes cardSlideOne {
+
+    0%, 100% {
+        transform: translateX(0);
+    }
+
+    50% {
+        transform: translateX(10px);
+    }
+}
+
+
+@keyframes cardSlideTwo {
+
+    0%, 100% {
+        transform: translateX(0);
+    }
+
+    50% {
+        transform: translateX(-10px);
+    }
+}
+
+
+@keyframes cardSlideThree {
+
+    0%, 100% {
+        transform: translateX(0);
+    }
+
+    50% {
+        transform: translateX(10px);
+    }
+}
+
+
+@keyframes cardSlideFour {
+
+    0%, 100% {
+        transform: translateX(0);
+    }
+
+    50% {
+        transform: translateX(-10px);
+    }
+}
+
+
+/* =====================================================
+   HOVER
+===================================================== */
 
 .network-card:hover {
     border-color: var(--accent);
@@ -1096,89 +1113,54 @@ img {
         0 0 0 1px var(--accent-light),
         var(--shadow-heavy);
 
-    scale: 1.06;
+    transform: translateY(-4px) !important;
 }
 
 
 /* =====================================================
-   CENTER
+   MOBILE
 ===================================================== */
 
-.network-center {
-    position: absolute;
+@media (max-width: 700px) {
 
-    left: 50%;
-    top: 50%;
+    .network-card {
+        width: 92px;
+        min-height: 60px;
 
-    transform: translate(-50%, -50%);
+        padding: 9px 10px;
+    }
 
-    width: 165px;
-    height: 165px;
+    .network-card strong {
+        font-size: 8px;
+    }
 
-    border-radius: 50%;
+    .network-card small {
+        font-size: 6px;
+    }
 
-    background: var(--surface);
+    .network-number {
+        font-size: 6px;
+    }
 
-    border: 1px solid var(--line-strong);
+    .card-one {
+        left: 3%;
+        top: 24%;
+    }
 
-    backdrop-filter: blur(20px);
+    .card-two {
+        right: 3%;
+        top: 24%;
+    }
 
-    display: flex;
+    .card-three {
+        left: 3%;
+        bottom: 21%;
+    }
 
-    justify-content: center;
-
-    align-items: center;
-
-    text-align: center;
-
-    box-shadow: var(--shadow-heavy);
-
-    z-index: 50;
-}
-
-
-.network-center img {
-    width: 45px;
-    height: 45px;
-
-    object-fit: contain;
-
-    margin-bottom: 7px;
-}
-
-
-.network-center h3 {
-    font-size: 17px;
-
-    letter-spacing: -0.04em;
-}
-
-
-.network-center p {
-    font-size: 7px;
-
-    color: var(--text-soft);
-
-    margin-top: 4px;
-}
-
-
-/* =====================================================
-   GLOW
-===================================================== */
-
-.network-glow {
-    position: absolute;
-
-    inset: -14px;
-
-    border-radius: 50%;
-
-    border: 1px solid var(--accent-light);
-
-    animation: glowPulse 3s ease-in-out infinite;
-
-    pointer-events: none;
+    .card-four {
+        right: 3%;
+        bottom: 21%;
+    }
 }
 
 
