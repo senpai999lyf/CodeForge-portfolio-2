@@ -1460,195 +1460,221 @@ document
 
     });
 /* =====================================================
-   14.5. INTERACTIVE CODEFORGE NETWORK
+   14.5. CODEFORGE NETWORK — SPINNING
    ===================================================== */
 
-const heroNetwork = document.querySelector(".hero-network");
-const networkNodes = document.querySelectorAll(".floating-node");
+const codeforgeNetwork =
+    document.querySelector(".codeforge-network");
 
-if (heroNetwork && networkNodes.length) {
+const codeforgeCards =
+    document.querySelectorAll(
+        ".codeforge-network .network-card"
+    );
 
-    let networkAngle = 0;
-    let networkSpeed = 0.25;
+if (codeforgeNetwork && codeforgeCards.length) {
+
+    let rotation = 0;
+
+    let speed = 0.25;
+
     let targetSpeed = 0.25;
-    let networkPaused = false;
 
-    const prefersReducedMotion =
-        window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    let paused = false;
 
-    /*
-     * Put every node on a circular orbit.
-     */
-    networkNodes.forEach((node, index) => {
+
+    /* ================================================
+       SET CARD POSITIONS
+    ================================================= */
+
+    codeforgeCards.forEach((card, index) => {
 
         const angle =
-            (360 / networkNodes.length) * index;
+            (360 / codeforgeCards.length) * index;
 
-        node.style.setProperty(
-            "--node-angle",
+        card.style.setProperty(
+            "--card-angle",
             `${angle}deg`
         );
 
-        node.setAttribute("tabindex", "0");
+    });
 
-        node.addEventListener("mouseenter", () => {
-            targetSpeed = 0.05;
-            node.classList.add("node-active");
-        });
 
-        node.addEventListener("mouseleave", () => {
+    /* ================================================
+       CARD HOVER
+    ================================================= */
+
+    codeforgeCards.forEach(card => {
+
+        card.addEventListener(
+            "mouseenter",
+            () => {
+
+                targetSpeed = 0.06;
+
+                card.classList.add(
+                    "network-card-active"
+                );
+
+            }
+        );
+
+
+        card.addEventListener(
+            "mouseleave",
+            () => {
+
+                targetSpeed = 0.25;
+
+                card.classList.remove(
+                    "network-card-active"
+                );
+
+            }
+        );
+
+
+        /* Click = pause */
+
+        card.addEventListener(
+            "click",
+            () => {
+
+                paused = !paused;
+
+            }
+        );
+
+    });
+
+
+    /* ================================================
+       DOUBLE CLICK NETWORK = PAUSE / RESUME
+    ================================================= */
+
+    codeforgeNetwork.addEventListener(
+        "dblclick",
+        () => {
+
+            paused = !paused;
+
+        }
+    );
+
+
+    /* ================================================
+       MOUSE SPEED CONTROL
+    ================================================= */
+
+    codeforgeNetwork.addEventListener(
+        "mousemove",
+        event => {
+
+            const rect =
+                codeforgeNetwork.getBoundingClientRect();
+
+            const mouseX =
+                (
+                    event.clientX -
+                    rect.left
+                ) / rect.width - 0.5;
+
+            targetSpeed =
+                0.25 +
+                Math.abs(mouseX) * 0.35;
+
+        }
+    );
+
+
+    codeforgeNetwork.addEventListener(
+        "mouseleave",
+        () => {
+
             targetSpeed = 0.25;
-            node.classList.remove("node-active");
-        });
 
-        node.addEventListener("click", () => {
+        }
+    );
 
-            networkPaused = !networkPaused;
 
-            node.classList.toggle(
-                "node-paused",
-                networkPaused
+    /* ================================================
+       SPINNING ANIMATION
+    ================================================= */
+
+    function spinCodeforgeNetwork() {
+
+        if (!paused) {
+
+            speed +=
+                (targetSpeed - speed) * 0.04;
+
+            rotation += speed;
+
+
+            codeforgeNetwork.style.setProperty(
+                "--network-rotation",
+                `${rotation}deg`
             );
 
-        });
 
-        node.addEventListener("keydown", (event) => {
+            codeforgeCards.forEach(
+                (card, index) => {
 
-            if (event.key === "Enter" || event.key === " ") {
+                    const baseAngle =
+                        (
+                            360 /
+                            codeforgeCards.length
+                        ) * index;
 
-                event.preventDefault();
-
-                networkPaused = !networkPaused;
-
-                node.classList.toggle(
-                    "node-paused",
-                    networkPaused
-                );
-            }
-
-        });
-    });
+                    const currentAngle =
+                        baseAngle + rotation;
 
 
-    /*
-     * Mouse interaction
-     */
-    heroNetwork.addEventListener("mousemove", (event) => {
-
-        const rect = heroNetwork.getBoundingClientRect();
-
-        const x =
-            (event.clientX - rect.left) /
-            rect.width - 0.5;
-
-        const y =
-            (event.clientY - rect.top) /
-            rect.height - 0.5;
-
-        heroNetwork.style.setProperty(
-            "--mouse-x",
-            `${x * 20}px`
-        );
-
-        heroNetwork.style.setProperty(
-            "--mouse-y",
-            `${y * 20}px`
-        );
-
-        targetSpeed =
-            0.25 + Math.abs(x) * 0.35;
-
-    });
-
-
-    heroNetwork.addEventListener("mouseleave", () => {
-
-        heroNetwork.style.setProperty(
-            "--mouse-x",
-            "0px"
-        );
-
-        heroNetwork.style.setProperty(
-            "--mouse-y",
-            "0px"
-        );
-
-        targetSpeed = 0.25;
-
-    });
-
-
-    /*
-     * Double click = pause / resume
-     */
-    heroNetwork.addEventListener("dblclick", () => {
-
-        networkPaused = !networkPaused;
-
-    });
-
-
-    /*
-     * ESC = resume
-     */
-    document.addEventListener("keydown", (event) => {
-
-        if (event.key === "Escape") {
-            networkPaused = false;
-        }
-
-    });
-
-
-    /*
-     * Continuous orbital animation
-     */
-    function animateNetwork() {
-
-        if (!networkPaused && !prefersReducedMotion) {
-
-            networkSpeed +=
-                (targetSpeed - networkSpeed) * 0.03;
-
-            networkAngle += networkSpeed;
-
-            networkNodes.forEach((node, index) => {
-
-                const baseAngle =
-                    (360 / networkNodes.length) * index;
-
-                const currentAngle =
-                    baseAngle + networkAngle;
-
-                const depth =
-                    Math.sin(
+                    const radians =
                         currentAngle *
-                        Math.PI / 180
+                        Math.PI / 180;
+
+
+                    /* Front/back depth */
+
+                    const depth =
+                        Math.sin(radians);
+
+
+                    const scale =
+                        0.88 +
+                        ((depth + 1) * 0.08);
+
+
+                    card.style.setProperty(
+                        "--orbit-angle",
+                        `${currentAngle}deg`
                     );
 
-                const scale =
-                    0.88 + (depth + 1) * 0.08;
 
-                node.style.setProperty(
-                    "--current-angle",
-                    `${currentAngle}deg`
-                );
+                    card.style.setProperty(
+                        "--orbit-scale",
+                        scale
+                    );
 
-                node.style.setProperty(
-                    "--node-scale",
-                    scale.toFixed(3)
-                );
 
-                node.style.setProperty(
-                    "--node-depth",
-                    `${Math.round(depth * 100)}`
-                );
+                    card.style.setProperty(
+                        "--orbit-depth",
+                        Math.round(depth * 100)
+                    );
 
-            });
+                }
+            );
+
         }
 
-        requestAnimationFrame(animateNetwork);
+
+        requestAnimationFrame(
+            spinCodeforgeNetwork
+        );
+
     }
 
-    animateNetwork();
+
+    spinCodeforgeNetwork();
+
 }
