@@ -1475,9 +1475,9 @@ if (codeforgeNetwork && codeforgeCards.length) {
 
     let rotation = 0;
 
-    let speed = 0.25;
+    let speed = 0.12;
 
-    let targetSpeed = 0.25;
+    let targetSpeed = 0.12;
 
     let paused = false;
 
@@ -1523,7 +1523,7 @@ if (codeforgeNetwork && codeforgeCards.length) {
             "mouseleave",
             () => {
 
-                targetSpeed = 0.25;
+                targetSpeed = 0.12;
 
                 card.classList.remove(
                     "network-card-active"
@@ -1579,8 +1579,8 @@ if (codeforgeNetwork && codeforgeCards.length) {
                 ) / rect.width - 0.5;
 
             targetSpeed =
-                0.25 +
-                Math.abs(mouseX) * 0.35;
+                0.12 +
+                Math.abs(mouseX) * 0.12;
 
         }
     );
